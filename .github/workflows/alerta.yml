@@ -1,0 +1,21 @@
+name: Enviar alerta a ntfy.sh
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Enviar notificación a ntfy.sh
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+          AUTHOR=$(git log -1 --pretty=format:"%an")
+          curl -H "Title: Nuevo push a main" \
+               -d "Commit: $COMMIT_MSG — Autor: $AUTHOR" \
+               https://ntfy.sh/devops-itla
